@@ -1,19 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom';
+import React from "react";
+import { connect } from "react-redux"
+import { withRouter } from "react-router-dom";
 
 class Footer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      color: 'yellow'
+      color: "yellow"
     };
   }
 
   handleLogout = () => {
-    localStorage.removeItem('auth_token');
+    localStorage.removeItem("auth_token");
     this.props.logout();
-    this.props.history.push('/login');
+    this.props.history.push("/login");
   }
 
   render() {
@@ -21,7 +21,7 @@ class Footer extends React.Component {
       <div className="container-fluid">
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
           PrintEasy &copy; { (new Date()).getFullYear() }
-          <a href='https://www.dutad.com' className="nav-item nav-link" target="_blank">Dut A.</a> All rights reserved.
+          <a href="https://www.dutad.com" className="nav-item nav-link" target="_blank" rel="noopener noreferrer">Dut A.</a> All rights reserved.
         </nav>
       </div>
     );
@@ -37,7 +37,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps= (dispatch) => {
   return {
     logout: () => {
-      dispatch({type: 'LOGOUT'})
+      dispatch({type: "LOGOUT"})
     }
   }
 }
