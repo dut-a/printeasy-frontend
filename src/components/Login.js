@@ -1,10 +1,12 @@
 
-import React from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Textfield } from "react-mdl";
+import C from '../constants';
+import { loginUser } from "../actions/users";
 
-class Login extends React.Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,38 +15,33 @@ class Login extends React.Component {
     };
   }
 
-  handleInputChange = e => {
+  updateData = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
   };
 
-  handleSubmit = e => {
+  login = e => {
     e.preventDefault();
-
     const reqObj = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "applicatin/json"
-      },
+      method: C.HTTP.POST,
+      headers: C.HTTP.HEADERS,
       body: JSON.stringify({ user: this.state })
     };
 
-    fetch("http://localhost:3000/api/v1/login", reqObj)
+    fetch(C.URLS.LOGIN, reqObj)
       .then(resp => resp.json())
       .then(data => {
         if (!data.error) {
-          localStorage.setItem("auth_token", data.auth_token);
+          localStorage.setItem(C.LS.AUTH, data.auth_token);
           this.props.loginUser({
-            username: data.user.username,
-            id: data.user.id
+            id: data.user.id,
+            username: data.user.username
           });
           this.props.history.push("/home");
         } else {
-          alert(data.error);
+          console.log(data.error);
         }
-        // redirect to about page
     });
 
     // reset state
@@ -58,12 +55,12 @@ class Login extends React.Component {
     return (
       <div>
         <h3>Sign in</h3>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.login}>
           <div className="mdl-textfield">
             <Textfield
               id="username"
               name="username"
-              onChange={this.handleInputChange}
+              onChange={this.updateData}
               value={this.state.username}
               label="Username"
               floatingLabel
@@ -74,7 +71,7 @@ class Login extends React.Component {
             <Textfield
               id="password"
               name="password"
-              onChange={this.handleInputChange}
+              onChange={this.updateData}
               value={this.state.password}
               label="Password"
               floatingLabel
@@ -85,7 +82,7 @@ class Login extends React.Component {
             <input type="submit" value="Login" className="btn btn-sm btn-success" />
           </div>
           <div>
-            Don"t have an account yet? &nbsp;&nbsp;
+            Don't have an account yet? &nbsp;&nbsp;
             <Link to="/signup" className="nav-item nav-link">
               <input type="submit" value="Create Account" className="btn btn-sm btn-primary" />
             </Link>
@@ -97,9 +94,7 @@ class Login extends React.Component {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    loginUser: user => {
-      dispatch({ type: "LOGIN_USER", user });
-    }
+    loginUser: user => dispatch(loginUser(user))
   };
 };
 

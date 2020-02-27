@@ -1,29 +1,32 @@
-import React from 'react';
-import {connect} from 'react-redux'
+import React from "react";
+import {connect} from "react-redux";
+import C from "../constants";
+import { loginUser } from "../actions/users";
 
 class Home extends React.Component {
 
   componentDidMount() {
-    const token = localStorage.getItem('auth_token')
-    if(!token) {
-      this.props.history.push('/login')
+    const token = localStorage.getItem(C.LS.AUTH);
+    if (!token) {
+      this.props.history.push("/login");
     } else {
       const reqObj = {
-        method: 'GET', 
+        method: C.HTTP.GET,
         headers: {
-          'Content-Type': 'application/json',
-          "Accept": "applicatin/json",
-          'Authorization': `Bearer ${token}`
+          ...C.HTTP.HEADERS,
+          "Authorization": `Bearer ${token}`
         }
-      }
+      };
 
-      fetch('http://localhost:3000/api/v1/profile', reqObj)
+      fetch(C.URLS.PROFILE, reqObj)
       .then(resp => resp.json())
       .then(data => {
-        this.props.loginUser({username: data.user.username, id: data.user.id}) 
-
-        console.log('user data', data)
-      })
+        this.props.loginUser({
+          username: data.user.username,
+          id: data.user.id
+        });
+        console.log("user data", data);
+      });
     }
   }
 
@@ -39,20 +42,17 @@ class Home extends React.Component {
   }
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     auth: state.auth
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    loginUser: (user) => {
-      dispatch({type: 'LOGIN_USER', user})
-    }
+    loginUser: user => dispatch(loginUser(user))
   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
-
 
