@@ -1,3 +1,4 @@
+
 const constants = {
 	LOGIN_USER: "LOGIN_USER",
 	LOGOUT_USER: "LOGOUT_USER",
@@ -32,8 +33,12 @@ const constants = {
     }
 	},
   URLS: {
+		ADDRESSES: "http://localhost:3000/api/v1/addresses",
     LOGIN: "http://localhost:3000/api/v1/login",
-    PROFILE: "http://localhost:3000/api/v1/profile"
+		PRINTS: "http://localhost:3000/api/v1/prints",
+		PROFILE: "http://localhost:3000/api/v1/profile",
+		SERVICES: "http://localhost:3000/api/v1/services",
+		USERS: "http://localhost:3000/api/v1/users"
   },
   LS: { // LS = localstorage
     AUTH: "auth_token"

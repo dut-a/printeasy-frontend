@@ -2,9 +2,14 @@ import C from "../constants";
 import fetch from "isomorphic-fetch";
 
 export function loginUser(user) {
-  return { type: C.LOGIN_USER, user }
+  return { type: C.LOGIN_USER, user };
 }
+
 export function logoutUser() {
-  return { type: C.LOGOUT_USER }
+  return { type: C.LOGOUT_USER };
+}
+
+export const createUser = user => {
+  return { type: C.ADD_USER, user };
 }
 
