@@ -1,19 +1,6 @@
+
 import C from "../constants";
 import fetch from "isomorphic-fetch";
-
-/** BEGIN: General */
-export const addError = errorMessage => 
-  ({
-    type: C.ADD_ERROR,
-    message: errorMessage
-  })
-
-export const clearError = errorIndex => 
-  ({
-    type: C.CLEAR_ERROR,
-    errorId: errorIndex
-  })
-/** END: General */
 
 export function loginUser(user) {
   return { type: C.LOGIN_USER, user };
