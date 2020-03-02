@@ -1,33 +1,38 @@
 import React from "react";
-import {connect} from "react-redux";
-import C from "../constants";
+import { connect } from "react-redux";
 import { loginUser } from "../actions/users";
+import { fetchServices } from "../actions/services";
+import { loggedIn, getRequestConfig } from "../common/generalfuncs";
+import Service from "./Service";
 
 class Home extends React.Component {
 
   componentDidMount() {
-    const token = localStorage.getItem(C.LS.AUTH);
-    if (!token) {
-      this.props.history.push("/login");
+    if (loggedIn()) {
+      this.props.fetchServices(getRequestConfig());
     } else {
-      const reqObj = {
-        method: C.HTTP.GET,
-        headers: {
-          ...C.HTTP.HEADERS,
-          "Authorization": `Bearer ${token}`
-        }
-      };
-
-      fetch(C.URLS.PROFILE, reqObj)
-      .then(resp => resp.json())
-      .then(data => {
-        this.props.loginUser({
-          username: data.user.username,
-          id: data.user.id
-        });
-        console.log("user data", data);
-      });
+      this.props.history.push("/login");
     }
+  }
+
+  getCurrentServices = () => this.props.services;
+
+  renderServices = () => this.getCurrentServices().map(service => {
+    return <Service key={service.id} service={service} handleClick={this.handleClick} />
+  });
+
+  noServices = () => <p>No services added yet...</p>;
+  
+  handleLoading = () => {
+    if(this.props.fetching) {
+      return <div>Loading Data...</div>
+    } else {
+      return this.renderServices();
+    }
+  }
+
+  handleClick = service => {
+    console.log("clicked:", service)
   }
 
   render() {
@@ -35,7 +40,14 @@ class Home extends React.Component {
       <div className="App">
         <div>
           <h1>Home</h1>
-          <p>Implement listing of all available services here...</p>
+          <div className="container">
+            <div className="row">
+              <div className="col-10 note-list-container" style={{}}>
+                { this.getCurrentServices().length > 0 ?
+                  this.handleLoading() : this.noServices() }
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -43,13 +55,21 @@ class Home extends React.Component {
 };
 
 const mapStateToProps = state => {
+  let currentServices = state.services.services;
+  if (currentServices === undefined) {
+    currentServices = state.services;
+  }
   return {
-    auth: state.auth
+    auth: state.auth,
+    services: currentServices,
+    fetching: state.fetching,
+
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    fetchServices: conf => dispatch(fetchServices(conf)),
     loginUser: user => dispatch(loginUser(user))
   }
 }

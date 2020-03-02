@@ -1,8 +1,6 @@
 
 import C from "../constants";
 
-
-
 export const startFetching = () => ({ type: C.ACTIONS.FETCHING });
 export const finishFetching = () => ({ type: C.ACTIONS.FINISH_FETCHING });
 

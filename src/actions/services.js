@@ -16,9 +16,9 @@ export const addServices = services => {
 }
 
 // API calls
-export const fetchServices = () => dispatch => {
+export const fetchServices = requestConfiguration => dispatch => {
   dispatch(startFetching());
-  fetch(C.URLS.SERVICES)
+  fetch(C.URLS.SERVICES, requestConfiguration)
     .then(response => response.json())
     .then(services => {
       dispatch(addServices(services));

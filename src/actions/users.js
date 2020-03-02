@@ -1,6 +1,7 @@
 
 import C from "../constants";
 import fetch from "isomorphic-fetch";
+import { addError } from "./general";
 
 export function loginUser(user) {
   return { type: C.LOGIN_USER, user };

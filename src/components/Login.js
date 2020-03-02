@@ -32,6 +32,7 @@ class Login extends Component {
     fetch(C.URLS.LOGIN, reqObj)
       .then(resp => resp.json())
       .then(data => {
+        console.log("login", data)
         if (!data.error) {
           localStorage.setItem(C.LS.AUTH, data.auth_token);
           this.props.loginUser({
