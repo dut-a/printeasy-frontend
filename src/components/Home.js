@@ -1,8 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { loginUser } from "../actions/users";
 import { fetchServices } from "../actions/services";
-import { loggedIn, getRequestConfig } from "../common/generalfuncs";
+import { loggedIn, getRequestConfig, noData } from "../common/generalfuncs";
 import Service from "./Service";
 
 class Home extends React.Component {
@@ -20,11 +19,9 @@ class Home extends React.Component {
   renderServices = () => this.getCurrentServices().map(service => {
     return <Service key={service.id} service={service} handleClick={this.handleClick} />
   });
-
-  noServices = () => <p>No services added yet...</p>;
   
   handleLoading = () => {
-    if(this.props.fetching) {
+    if (this.props.fetching) {
       return <div>Loading Data...</div>
     } else {
       return this.renderServices();
@@ -44,7 +41,7 @@ class Home extends React.Component {
             <div className="row">
               <div className="col-10 note-list-container" style={{}}>
                 { this.getCurrentServices().length > 0 ?
-                  this.handleLoading() : this.noServices() }
+                  this.handleLoading() : noData() }
               </div>
             </div>
           </div>
@@ -62,15 +59,13 @@ const mapStateToProps = state => {
   return {
     auth: state.auth,
     services: currentServices,
-    fetching: state.fetching,
-
+    fetching: state.fetching
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchServices: conf => dispatch(fetchServices(conf)),
-    loginUser: user => dispatch(loginUser(user))
+    fetchServices: conf => dispatch(fetchServices(conf))
   }
 }
 

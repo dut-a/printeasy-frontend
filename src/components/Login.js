@@ -34,14 +34,19 @@ class Login extends Component {
       .then(data => {
         console.log("login", data)
         if (!data.error) {
-          localStorage.setItem(C.LS.AUTH, data.auth_token);
+          localStorage.setItem(C.LS.USER, JSON.stringify({
+            auth_token: data.auth_token,
+            user_id: data.user.id,
+            username: data.user.username,
+            user_type: data.user.user_type.toLowerCase()
+          }));
           this.props.loginUser({
             id: data.user.id,
             username: data.user.username
           });
           this.props.history.push("/home");
         } else {
-          console.log(data.error);
+          console.log("ERROR -> Login():", data.error);
         }
     });
 

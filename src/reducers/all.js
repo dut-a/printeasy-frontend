@@ -62,9 +62,11 @@ export const services = function(state = { services: [] }, action) {
         if (service.id === action.service.id) {
           return {
             ...service,
-            title: action.service.title,
-            details: action.service.details,
-            tags: action.service.tags
+            service_type: action.service.service_type,
+            cost: action.service.cost,
+            time_to_complete: action.service.time_to_complete,
+            user: action.service.user,
+            prints: action.service.prints
           }
         } else {
           return service
@@ -82,10 +84,57 @@ export const services = function(state = { services: [] }, action) {
   }
 }
 
+export const prints = function(state = { prints: [] }, action) {
+  switch (action.type) {
+    case C.ADD_PRINTS:
+      return {
+        prints: [...action.prints]
+      };
+    case C.ADD_PRINT:
+      return {
+        prints: state.prints.concat(action.print)
+      };
+    case C.EDIT_PRINT:
+      const newPrints = state.prints.map(print => {
+        if (print.id === action.print.id) {
+          return {
+            ...print,
+            print_type: action.print.print_type,
+            number_of_copies: action.print.number_of_copies,
+            ordered_by: action.print.ordered_by,
+            fulfilled_by: action.print.fulfilled_by,
+            payment_method: action.print.payment_method,
+            payment_status: action.print.payment_status,
+            pickup_location: action.print.pickup_location,
+            pickup_type: action.print.pickup_type,
+            delivery_address: action.print.delivery_address,
+            placed_on: action.print.placed_on,
+            estimated_completion_time: action.print.estimated_completion_time,
+            status: action.print.status,
+            user: action.print.user,
+            service: action.print.service
+          }
+        } else {
+          return print
+        }
+      });
+      console.log("edit: ", { prints: newPrints });
+      return {
+        prints: newPrints
+      };
+    case C.DELETE_PRINT:
+      console.log("DELETE, print Id: ", action.printId);
+      return state.prints.filter(print => print.id !== action.printId);
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   auth,
   loader,
   services,
+  prints,
   errors,
   fetching
 });

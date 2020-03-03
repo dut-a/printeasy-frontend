@@ -9,6 +9,10 @@ const constants = {
 	ADD_SERVICES: "ADD_SERVICES", // plural
 	EDIT_SERVICE: "EDIT_SERVICE",
 	DELETE_SERVICE: "DELETE_SERVICE",
+	ADD_PRINT: "ADD_PRINT",
+	ADD_PRINTS: "ADD_PRINTS", // plural
+	EDIT_PRINT: "EDIT_PRINT",
+	DELETE_PRINT: "DELETE_PRINT",
 	ADD_ERROR: "ADD_ERROR",
 	CLEAR_ERROR: "CLEAR_ERROR",
 	USER_IN_VIEW: "USER_IN_VIEW", // may not be necessary
@@ -45,7 +49,7 @@ const constants = {
 		USERS: "http://localhost:3000/api/v1/users"
   },
   LS: { // LS = localstorage
-    AUTH: "auth_token"
+		USER: "user"
   }
 };
 

@@ -1,11 +1,15 @@
 
+import React from "react";
 import C from "../constants";
 
 export function login(user) {
   
 }
 
-const getAuthToken = () => localStorage.getItem(C.LS.AUTH);
+const getUserData = () => JSON.parse(localStorage.user);
+const getAuthToken = () => getUserData().auth_token;
+const getCurrentUserId = () => getUserData().user_id;
+const getCurrentUserType = () => getUserData().user_type;
 
 const getRequestConfig = (httpMethod = C.HTTP.GET) => {
   return {
@@ -18,10 +22,14 @@ const getRequestConfig = (httpMethod = C.HTTP.GET) => {
 }
 
 const loggedIn = () => getAuthToken() !== null;
+const noData = () => <p>No data available yet...</p>;
 
 export {
   getAuthToken,
   getRequestConfig,
-  loggedIn
+  loggedIn,
+  getCurrentUserId,
+  getCurrentUserType,
+  noData
 }
 

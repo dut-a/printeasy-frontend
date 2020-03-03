@@ -9,7 +9,7 @@ import { logoutUser } from "../actions/users";
 class TopNav extends Component {
   
   logout = () => {
-    localStorage.removeItem(C.LS.AUTH);
+    localStorage.removeItem(C.LS.USER);
     this.props.logout();
     this.props.history.push("/login");
   }
