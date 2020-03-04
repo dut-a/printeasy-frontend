@@ -42,6 +42,8 @@ class Home extends React.Component {
     console.log("clicked:", service)
   }
 
+  urlify = txt => txt.toLowerCase().split(" ").join("_");
+
   renderServiceValues = values => values.map(service => <p key={service.id}>{service.user.name}</p>);
 
   renderServices = () => {
@@ -49,8 +51,15 @@ class Home extends React.Component {
     const output = Object.keys(serviceOffers).map(offer => {
       return (
         <div key={offer} onClick={() => this.handleClick(serviceOffers[offer])}>
-          <h1>{ offer }</h1>
-          { this.renderServiceValues(serviceOffers[offer]) }
+          <b> { offer } </b> <br />
+          <img style={{ width: '100px', float: 'left', margin: '5px' }} src={ require(`../images/${this.urlify(offer)}.jpg`)} />
+          {/* {menu.Description} */}
+          <p />
+          <div>
+            { this.renderServiceValues(serviceOffers[offer]) }
+          </div>
+          <hr />
+          {/* <div>${menu.Price} | <a href='#' onClick={this.addToCart.bind(this, menu.Id) } >Add to cart</a></div><hr /> */}
         </div>
       );
     });
@@ -65,7 +74,11 @@ class Home extends React.Component {
           <div className="container">
             <div className="row">
               <div className="col-10 note-list-container" style={{}}>
-                { this.getCurrentServices().length > 0 ? this.handleLoading() : noData() }
+                <div id="wrapper">
+                  <div id="dvmenu">
+                    { this.getCurrentServices().length > 0 ? this.handleLoading() : noData() }
+                  </div>
+                </div>
               </div>
             </div>
           </div>

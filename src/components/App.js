@@ -8,6 +8,7 @@ import {
 // eslint-disable-next-line
 import logo from "../logo.svg";
 import "../App.css";
+import "../App-more.css";
 // eslint-disable-next-line
 import ServicesList from "./ServicesList";
 import Home from "./Home";
