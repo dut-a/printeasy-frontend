@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import { FaPrint } from "react-icons/fa";
 import C from "../constants";
 import { logoutUser } from "../actions/users";
+import { getCurrentUserType } from "../common/generalfuncs";
 
 class TopNav extends Component {
   
@@ -32,11 +33,13 @@ class TopNav extends Component {
                 Home <span className="sr-only">(current)</span>
               </Link>
               <Link to="/orders" className="nav-item nav-link">
-                My Orders
+              { getCurrentUserType() === "merchant" ? <span>Orders</span> : <span>My Orders</span> }
               </Link>
-              <Link to="/order" className="nav-item nav-link">
-                Place Order
-              </Link>
+              { getCurrentUserType() === "merchant" ? null :
+                  <Link to="/order" className="nav-item nav-link">
+                    Place Order
+                  </Link>
+              }
               <Link to="/profile" className="nav-item nav-link">
                 My Profile
               </Link>

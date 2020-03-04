@@ -1,7 +1,7 @@
 
 import C from "../constants";
 import fetch from "isomorphic-fetch";
-import { addError } from "./general";
+import { addError, startFetching, finishFetching } from "./general";
 
 export function loginUser(user) {
   return { type: C.LOGIN_USER, user };
@@ -13,6 +13,10 @@ export function logoutUser() {
 
 export const addUser = user => {
   return { type: C.ADD_USER, user };
+}
+
+export const addUsers = users => {
+  return { type: C.ADD_USERS, users };
 }
 
 export const createUser = user => dispatch => {
@@ -32,6 +36,20 @@ export const createUser = user => dispatch => {
     .catch(error => {
       dispatch(addError(error.message));
       // dispatch(finishAdding());
+    });
+}
+
+export const fetchUsers = requestConfiguration => dispatch => {
+  dispatch(startFetching());
+  fetch(C.URLS.USERS, requestConfiguration)
+    .then(response => response.json())
+    .then(users => {
+      dispatch(addUsers(users));
+      dispatch(finishFetching()); // TODO: should this be here?
+    })
+    .catch(error => {
+      dispatch(addError(error.message));
+      dispatch(finishFetching());
     });
 }
 

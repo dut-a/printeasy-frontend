@@ -38,7 +38,8 @@ class Login extends Component {
             auth_token: data.auth_token,
             user_id: data.user.id,
             username: data.user.username,
-            user_type: data.user.user_type.toLowerCase()
+            user_type: data.user.user_type.toLowerCase(),
+            addr: data.user.physical_address
           }));
           this.props.loginUser({
             id: data.user.id,

@@ -1,3 +1,4 @@
+
 import React from "react";
 import { connect } from "react-redux";
 import { fetchServices } from "../actions/services";
@@ -16,8 +17,17 @@ class Home extends React.Component {
 
   getCurrentServices = () => this.props.services;
 
-  renderServices = () => this.getCurrentServices().map(service => {
-    return <Service key={service.id} service={service} handleClick={this.handleClick} />
+  getCustomOfferers = services => {
+    return services.reduce(function (r, a) {
+      let key = a.service_type || 'others';
+      r[key] = r[key] || [];
+      r[key].push(a);
+      return r;
+    }, Object.create(null));
+  }
+
+  renderServices_alt = () => this.getCurrentServices().map(service => {
+    return <Service key={service.id} offerers={this.getCustomOfferers(this.getCurrentServices())} service={service} handleClick={this.handleClick} />
   });
   
   handleLoading = () => {
@@ -32,6 +42,21 @@ class Home extends React.Component {
     console.log("clicked:", service)
   }
 
+  renderServiceValues = values => values.map(service => <p key={service.id}>{service.user.name}</p>);
+
+  renderServices = () => {
+    const serviceOffers = this.getCustomOfferers(this.getCurrentServices());
+    const output = Object.keys(serviceOffers).map(offer => {
+      return (
+        <div key={offer} onClick={() => this.handleClick(serviceOffers[offer])}>
+          <h1>{ offer }</h1>
+          { this.renderServiceValues(serviceOffers[offer]) }
+        </div>
+      );
+    });
+    return output;
+  }
+
   render() {
     return (
       <div className="App">
@@ -40,8 +65,7 @@ class Home extends React.Component {
           <div className="container">
             <div className="row">
               <div className="col-10 note-list-container" style={{}}>
-                { this.getCurrentServices().length > 0 ?
-                  this.handleLoading() : noData() }
+                { this.getCurrentServices().length > 0 ? this.handleLoading() : noData() }
               </div>
             </div>
           </div>

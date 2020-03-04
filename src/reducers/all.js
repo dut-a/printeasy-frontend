@@ -84,6 +84,48 @@ export const services = function(state = { services: [] }, action) {
   }
 }
 
+export const users = function(state = { users: [] }, action) {
+  switch (action.type) {
+    case C.ADD_USERS:
+      return {
+        users: [...action.users]
+      };
+    case C.ADD_USER:
+      return {
+        users: state.users.concat(action.user)
+      };
+    case C.EDIT_USER:
+      const newUsers = state.users.map(user => {
+        if (user.id === action.user.id) {
+          return {
+            ...user,
+            username: action.user.username,
+            user_type: action.user.user_type,
+            bio: action.user.bio,
+            picture: action.user.picture,
+            phone_number: action.user.phone_number,
+            email_address: action.user.email_address,
+            physical_address: action.user.physical_address,
+            first_name: action.user.first_name,
+            middle_name: action.user.middle_name,
+            last_name: action.user.last_name
+          }
+        } else {
+          return user
+        }
+      });
+      console.log("edit: ", { users: newUsers });
+      return {
+        users: newUsers
+      };
+    case C.DELETE_USER:
+      console.log("DELETE, user Id: ", action.userId);
+      return state.users.filter(user => user.id !== action.userId);
+    default:
+      return state;
+  }
+}
+
 export const prints = function(state = { prints: [] }, action) {
   switch (action.type) {
     case C.ADD_PRINTS:
@@ -134,6 +176,7 @@ export default combineReducers({
   auth,
   loader,
   services,
+  users,
   prints,
   errors,
   fetching

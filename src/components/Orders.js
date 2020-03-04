@@ -15,11 +15,15 @@ class Orders extends React.Component {
   }
 
   getUserOrders = () => this.props.prints.filter(or => {
+    console.log("current order", or)
+    let ownedOrders = [];
+    console.log("current user type: ", getCurrentUserType());
     if (getCurrentUserType() === "merchant") {
-      return or.fulfilled_by === getCurrentUserId();
+      ownedOrders = or.fulfilled_by === getCurrentUserId();
     } else if (getCurrentUserType() === "customer") {
-      return or.ordered_by === getCurrentUserId();
+      ownedOrders = or.ordered_by === getCurrentUserId();
     }
+    return ownedOrders;
   });
 
   renderOrders = () => this.getUserOrders().map(order => {
@@ -39,6 +43,7 @@ class Orders extends React.Component {
   }
 
   render() {
+    console.log("CURRENT prints",this.props.prints)
     return (
       <div className="App">
         <div>
