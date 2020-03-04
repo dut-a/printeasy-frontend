@@ -52,15 +52,12 @@ class PlaceOrder extends Component {
 
   getCurrentServices = () => this.props.services;
   getCurrentUsers = () => this.props.users;
-  getSelectedService = () => {
-    return getServiceOfferings(this.getCurrentServices(), this.state.print_type).filter(so => so.user.name === this.getSelectedMerchant().name)[0];
-  }
-
-  // getServiceOfferings = () => {
-  //   return this.getCurrentServices().filter(service => 
-  //     service.service_type === this.state.print_type);
-  // }
+ 
   getSelectedMerchant = () => {
+    console.log(this.state)
+    if (this.state.fulfilled_by === '') {
+      return false
+    }
     return JSON.parse(this.state.fulfilled_by);
   }
 
@@ -73,42 +70,45 @@ class PlaceOrder extends Component {
     return `${total} hour${s}`;
   }
 
+  getSelectedService = () => {
+    return getServiceOfferings(this.getCurrentServices(), this.state.print_type).find(so => so.user.name === this.getSelectedMerchant().name);
+  }
+
   calculateTotal = () => {
     // service 'cost' * 'number of copies'
-    const unitCost = parseInt(this.getSelectedService().cost);
-    console.log("current service:", this.getSelectedService());
-    // const unitCost = 5.05;
-    const numCopies = parseInt(this.state.number_of_copies);
-    console.log("currentTotal", roundNumber((unitCost * numCopies)))
+    const service = this.getSelectedService()
+    if (!service) { return "0.00" }
+    const unitCost = parseInt(service.cost) || 1.05;
+    const numCopies = parseInt(this.state.number_of_copies) || 1;
     return roundNumber((unitCost * numCopies));
   }
 
   getFileToPrint = () => {
     let f = document.querySelector('input[type="file"]');
-     return f !== null ? f.files[0] : null;
+    return f !== null ? f.files[0] : null;
   }
 
   updateData = e => {
     this.setState({
       [e.target.name]: e.target.value,
       doc_to_print: this.getFileToPrint(),
-      // total_cost: this.calculateTotal()
+      total_cost: this.calculateTotal()
     });
   }
 
   createOrder = e => {
     e.preventDefault();
+    const currentMerchant = this.getSelectedMerchant()
     const orderData = new FormData();
     const p_stat = this.state.payment_method.toLowerCase() === "online" ? "paid" : "unpaid";
     let modifiedStateData = {
       ...this.state,
       payment_status: p_stat, // dependent on payment_method
-      fulfilled_by: this.getSelectedMerchant().id, // selected merchant (id)
-      pickup_location: this.getSelectedMerchant().physical_address, // dependent on pickup_type, selected merchant's location
+      fulfilled_by: currentMerchant.id, // selected merchant (id)
+      pickup_location: currentMerchant.physical_address, // dependent on pickup_type, selected merchant's location
       delivery_address: getCurrentUserAddress(), // dependent on pickup_type, logged in user's address
       estimated_completion_time: this.getCompletionTime(), // dependent on print_type + number of copies
-      service_id: this.getSelectedService().id, // selected 'service type' (id),
-      total_cost: this.calculateTotal()
+      service_id: this.getSelectedService().id // selected 'service type' (id)
     }
     for (let value in modifiedStateData) {
       orderData.append(value, modifiedStateData[value]);
@@ -123,17 +123,6 @@ class PlaceOrder extends Component {
   }
 
   render() {
-    // console.log("placeOrder(PROPS)", this.props)
-    console.log("placeOrder(state)", this.state)
-    // let user = this.getSelectedService() !== undefined ? this.getSelectedService().user : "no user"
-    // let offerers = this.getServiceOfferings() !== [] ? this.getServiceOfferings() : "Nothing here"
-    // let s = this.getSelectedService() !== undefined ? this.getSelectedService() : "no service"
-    // console.log(user);
-    // console.log(s);
-    // console.log(offerers);
-    if (this.state.fulfilled_by !== "")
-        console.log(this.getSelectedService())
-    // console.log("select mer", this.getSelectedMerchant());
     return (
       <div className="App">
         <div>
@@ -227,16 +216,14 @@ class PlaceOrder extends Component {
               name="doc_to_print"
               accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.rtf,.txt"
               onChange={this.updateData}
-              // value={this.state.doc_to_print} /* This will error out, don't do it! */
               className=""
               type="file"
             />
           </div>
 
           <div className="mdl-textfield">
-            {/* TODO: make this work or delete it */}
-            <label><strong>Total</strong>: </label>
-            <span>${this.state.total_cost}</span>
+            <label><strong>Total</strong>:</label>&nbsp;
+            <span>${ this.calculateTotal() }</span>
           </div>
           <div>
             <input type="submit" value="Place order" className="btn btn-sm btn-success" />
