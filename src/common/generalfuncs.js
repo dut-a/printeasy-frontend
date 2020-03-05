@@ -6,7 +6,9 @@ export function login(user) {
   
 }
 
-const getUserData = () => JSON.parse(localStorage.user);
+const getUserData = () => {
+  return JSON.parse(localStorage.user);
+}
 const getAuthToken = () => getUserData().auth_token;
 const getCurrentUserId = () => getUserData().user_id;
 const getCurrentUserType = () => getUserData().user_type;
@@ -34,7 +36,14 @@ const formatDate = date => {
   return date.toLocaleDateString(locales[0], options);
 }
 
+const formatDateForSort = date => {
+  const d = new Date(date)
+  const formattedDate = `${d.getFullYear()}-${padNumber((d.getMonth() + 1))}-${padNumber(d.getDate())}`;
+  return formattedDate;
+}
+
 const roundNumber = num => (Math.round((num + Number.EPSILON) * 100) / 100);
+const padNumber = num => ((num < 10) ? ("0" + num) : num);
 
 const loggedIn = () => getAuthToken() !== null;
 const noData = () => <p>No data available yet...</p>;
@@ -44,6 +53,7 @@ export {
   getRequestConfig,
   formatDate,
   roundNumber,
+  formatDateForSort,
   loggedIn,
   getCurrentUserId,
   getCurrentUserType,

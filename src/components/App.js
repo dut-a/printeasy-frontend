@@ -9,6 +9,7 @@ import {
 import logo from "../logo.svg";
 import "../App.css";
 import "../App-more.css";
+import "../css/litte-app-table.css"
 // eslint-disable-next-line
 import ServicesList from "./ServicesList";
 import Home from "./Home";
