@@ -1,29 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux'
+import { loggedIn } from '../common/generalfuncs';
 
 class Help extends React.Component {
 
   componentDidMount() {
-    const token = localStorage.getItem('auth_token')
-    if(!token) {
-      this.props.history.push('/login')
+    if (loggedIn()) {
+      // this.props.fetchUsers(getRequestConfig());
+      // this.props.fetchServices(getRequestConfig());
     } else {
-      const reqObj = {
-        method: 'GET', 
-        headers: {
-          'Content-Type': 'application/json',
-          "Accept": "applicatin/json",
-          'Authorization': `Bearer ${token}`
-        }
-      }
-
-      fetch('http://localhost:3000/api/v1/profile', reqObj)
-      .then(resp => resp.json())
-      .then(data => {
-        this.props.loginUser({username: data.user.username, id: data.user.id}) 
-
-        console.log('user data', data)
-      })
+      this.props.history.push("/login");
     }
   }
 
