@@ -1,3 +1,6 @@
+
+import C from "../constants";
+import fetch from "isomorphic-fetch";
 import React from 'react';
 import { connect } from 'react-redux';
 import { loggedIn, getRequestConfig, noData, getCurrentUserId, getCurrentUserType, formatDateForSort } from "../common/generalfuncs";
@@ -5,6 +8,7 @@ import { fetchOrders } from '../actions/orders';
 import Order from './Order';
 import $ from 'jquery';
 import * as tableSorter from "tablesorter";
+import { addError } from "../actions/general";
 
 class Orders extends React.Component {
 
@@ -31,8 +35,8 @@ class Orders extends React.Component {
   displayRow = () => {
     return this.getUserOrders().map(order => {
       return (
-          <tr>
-            <td><img src={ require("../images/t/course_0065.jpg") } />{ order.print_type }</td>
+          <tr key={order.id}>
+            <td onClick={this.editPrint(order)}><img src={ require("../images/digital_printing_tn.jpg") } />{ order.print_type }</td>
             <td>{ order.doc_to_print.url }</td>
             <td data-date={ formatDateForSort(order.placed_on) }>{ order.placed_on }</td>
 
@@ -92,8 +96,34 @@ class Orders extends React.Component {
     console.log("clicked:", order)
   }
 
+
+
+
+editPrint = printData => dispatch => {
+  let p = {"status": "EDITED"}
+  let reqConf = {
+    method: C.HTTP.PATCH,
+    headers: C.HTTP.HEADERS,
+    body: JSON.stringify(p)
+  }
+  // dispatch(startAdding());
+  fetch(C.URLS.prints, reqConf)
+    .then(response => response.json())
+    .then(data => {
+      // TODO: How about returning 'fetch' object from above and doing this 'then' in the calling context?
+      // dispatch(addUser(data.user));
+      console.log("PRINT data (PATCH)", data);
+      // dispatch(finishAdding()); // TODO: should this be here?
+    })
+    .catch(error => {
+      // dispatch(addError(error.message));
+      // dispatch(finishAdding());
+    });
+}
+
   render() {
 
+    // table data sorting
     $(document).ready(function() {
       $.tablesorter.addParser({
         id: "getDateAttr",

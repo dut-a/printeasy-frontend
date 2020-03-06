@@ -150,7 +150,7 @@ class Signup extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <h3>Create an Account</h3>
         <form onSubmit={this.createUser}>
           <div className="mdl-textfield">
@@ -294,12 +294,12 @@ class Signup extends Component {
           { (this.state.user_type.toLowerCase() === "merchant") ? this.getMerchantOnlyFields() : null } 
 
           <div>
-            <input type="submit" value="Create Account" className="btn btn-sm btn-success" />
+            <input type="submit" value="Create Account" className="btn btn-success" />
           </div>
-          <div>
+          <div style={{marginTop: "5%"}}>
             Already have an account yet? &nbsp;
             <Link to="/login" className="nav-item nav-link">
-              <input type="submit" value="Login" className="btn btn-sm btn-primary" />
+              <input type="submit" value="Login" className="btn btn-primary" />
             </Link>
           </div>
         </form>

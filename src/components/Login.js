@@ -86,12 +86,12 @@ class Login extends Component {
             />
           </div>
           <div>
-            <input type="submit" value="Login" className="btn btn-sm btn-success" />
+            <input type="submit" value="Login" className="btn btn-success" />
           </div>
-          <div>
+          <div style={{marginTop: "5%"}}>
             Don't have an account yet? &nbsp;&nbsp;
             <Link to="/signup" className="nav-item nav-link">
-              <input type="submit" value="Create Account" className="btn btn-sm btn-primary" />
+              <input type="submit" value="Create Account" className="btn btn-primary" />
             </Link>
           </div>
         </form>

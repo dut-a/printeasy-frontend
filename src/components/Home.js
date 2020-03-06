@@ -51,15 +51,14 @@ class Home extends React.Component {
     const output = Object.keys(serviceOffers).map(offer => {
       return (
         <div key={offer} onClick={() => this.handleClick(serviceOffers[offer])}>
-          <b> { offer } </b> <br />
-          <img style={{ width: '100px', float: 'left', margin: '5px' }} src={ require(`../images/${this.urlify(offer)}.jpg`)} />
-          {/* {menu.Description} */}
+          <p className="title-medium"> { offer } </p>
+          <img style={{ width: '300px', float: 'left', margin: '2px' }} src={ require(`../images/${this.urlify(offer)}.jpg`)} />
           <p />
           <div>
+            <strong><em style={{color: "red"}}>Offered by</em></strong>
             { this.renderServiceValues(serviceOffers[offer]) }
           </div>
           <hr />
-          {/* <div>${menu.Price} | <a href='#' onClick={this.addToCart.bind(this, menu.Id) } >Add to cart</a></div><hr /> */}
         </div>
       );
     });
@@ -73,9 +72,15 @@ class Home extends React.Component {
           <h1>Home</h1>
           <div className="container">
             <div className="row">
-              <div className="col-10 note-list-container" style={{}}>
-                <div id="wrapper">
-                  <div id="dvmenu">
+              <div className="col-12 note-list-container" style={{}}>
+                <div id="card-wrapper">
+                  <div id="card-container" style={{marginTop: "-11%"}}>
+                    <header>
+                      <h1>Services</h1>
+                    </header>
+                    <article>
+                      <p>Available services</p>
+                    </article>
                     { this.getCurrentServices().length > 0 ? this.handleLoading() : noData() }
                   </div>
                 </div>

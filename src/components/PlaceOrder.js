@@ -119,116 +119,115 @@ class PlaceOrder extends Component {
      * TODO: Ensure there is no error from user creation before sending to login.
      */
     this.props.history.push("/orders");
-    // this.props.history.push("/home");
   }
 
   render() {
     return (
       <div className="App">
-        <div>
+        <div className="container">
           <h1>Place Order</h1>
-        <form onSubmit={this.createOrder}>
-          <div className="mdl-textfield">
-            <label htmlFor="print_type">Print type</label>
-            <select
-              id="print_type"
-              name="print_type"
-              onChange={this.updateData}
-              value={this.state.print_type}
-              className="form-control form-control-sm"
-              style={{ width: "200px" }}
-              >
-              <option value="" disabled>---select---</option>
-              {
-                this.getCurrentServices().map(s => <option key={s.id} value={s.service_type}>{s.service_type}</option>)
-              }
-            </select>
-          </div>
-          <div className="mdl-textfield">
-            <label htmlFor="fulfilled_by">Merchant</label>
-            <select
-              id="fulfilled_by"
-              name="fulfilled_by"
-              onChange={this.updateData}
-              value={this.state.fulfilled_by}
-              className="form-control form-control-sm"
-              style={{ width: "200px" }}
-              >
-              <option value="" disabled>---select---</option>
-              {
-                getServiceOfferings(this.getCurrentServices(), this.state.print_type).map(offering => <option key={offering.user.id} value={JSON.stringify(offering.user)}>{offering.user.name}</option>)
-              }
-            </select>
-          </div>
+          <form onSubmit={this.createOrder}>
+            <div className="mdl-textfield">
+              <label htmlFor="print_type">Print type</label>
+              <select
+                id="print_type"
+                name="print_type"
+                onChange={this.updateData}
+                value={this.state.print_type}
+                className="form-control form-control-sm"
+                style={{ width: "200px" }}
+                >
+                <option value="" disabled>---select---</option>
+                {
+                  this.getCurrentServices().map(s => <option key={s.id} value={s.service_type}>{s.service_type}</option>)
+                }
+              </select>
+            </div>
+            <div className="mdl-textfield">
+              <label htmlFor="fulfilled_by">Merchant</label>
+              <select
+                id="fulfilled_by"
+                name="fulfilled_by"
+                onChange={this.updateData}
+                value={this.state.fulfilled_by}
+                className="form-control form-control-sm"
+                style={{ width: "200px" }}
+                >
+                <option value="" disabled>---select---</option>
+                {
+                  getServiceOfferings(this.getCurrentServices(), this.state.print_type).map(offering => <option key={offering.user.id} value={JSON.stringify(offering.user)}>{offering.user.name}</option>)
+                }
+              </select>
+            </div>
 
-          <div className="mdl-textfield">
-            <Textfield
-              id="number_of_copies"
-              name="number_of_copies"
-              onChange={this.updateData}
-              value={this.state.number_of_copies}
-              pattern="[0-9]+"
-              error="'Number of copies' must be a number."
-              label="Number of copies"
-              floatingLabel
-              style={{ width: "200px" }}
-            />
-          </div>
+            <div className="mdl-textfield">
+              <Textfield
+                id="number_of_copies"
+                name="number_of_copies"
+                onChange={this.updateData}
+                value={this.state.number_of_copies}
+                pattern="[0-9]+"
+                error="'Number of copies' must be a number."
+                label="Number of copies"
+                floatingLabel
+                style={{ width: "200px" }}
+              />
+            </div>
 
-          <div className="mdl-textfield">
-            <label htmlFor="payment_method">Payment method</label>
-            <select
-              id="payment_method"
-              name="payment_method"
-              onChange={this.updateData}
-              value={this.state.payment_method}
-              className="form-control form-control-sm"
-              style={{ width: "200px" }}
-              >
-              <option value="" disabled>---select---</option>
-              <option value="In person">In person</option>
-              <option value="Online">Online</option>
-            </select>
-          </div>
+            <div className="mdl-textfield">
+              <label htmlFor="payment_method">Payment method</label>
+              <select
+                id="payment_method"
+                name="payment_method"
+                onChange={this.updateData}
+                value={this.state.payment_method}
+                className="form-control form-control-sm"
+                style={{ width: "200px" }}
+                >
+                <option value="" disabled>---select---</option>
+                <option value="In person">In person</option>
+                <option value="Online">Online</option>
+              </select>
+            </div>
 
-          <div className="mdl-textfield">
-            <label htmlFor="pickup_type">Pickup type</label>
-            <select
-              id="pickup_type"
-              name="pickup_type"
-              onChange={this.updateData}
-              value={this.state.pickup_type}
-              className="form-control form-control-sm"
-              style={{ width: "200px" }}
-              >
-              <option value="" disabled>---select---</option>
-              <option value="In person">In person</option>
-              <option value="Delivery">Delivery</option>
-            </select>
-          </div>
+            <div className="mdl-textfield">
+              <label htmlFor="pickup_type">Pickup type</label>
+              <select
+                id="pickup_type"
+                name="pickup_type"
+                onChange={this.updateData}
+                value={this.state.pickup_type}
+                className="form-control form-control-sm"
+                style={{ width: "200px" }}
+                >
+                <option value="" disabled>---select---</option>
+                <option value="In person">In person</option>
+                <option value="Delivery">Delivery</option>
+              </select>
+            </div>
 
-          <div className="mdl-textfield">
-            <label
-              htmlFor="doc_to_print">Document
-            </label>
-            <input
-              id="doc_to_print"
-              name="doc_to_print"
-              accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.rtf,.txt"
-              onChange={this.updateData}
-              className=""
-              type="file"
-            />
-          </div>
+            <div className="mdl-textfield">
+              <label
+                htmlFor="doc_to_print">Document
+              </label>
+              <input
+                id="doc_to_print"
+                name="doc_to_print"
+                accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.rtf,.txt"
+                onChange={this.updateData}
+                className=""
+                type="file"
+              />
+            </div>
 
-          <div className="mdl-textfield">
-            <label><strong>Total</strong>:</label>&nbsp;
-            <span>${ this.calculateTotal() }</span>
-          </div>
-          <div>
-            <input type="submit" value="Place order" className="btn btn-sm btn-success" />
-          </div>
-        </form>
+            <div className="mdl-textfield">
+              <label><strong>Total</strong>:</label>&nbsp;
+              <span className="grand-total">${ this.calculateTotal() }</span>
+            </div>
+            <div>
+              <input type="submit" value="Place order" className="btn btn-sm btn-success" />
+            </div>
+          </form>
         </div>
       </div>
     );
