@@ -5,9 +5,48 @@ import { withRouter } from "react-router-dom";
 import { FaPrint } from "react-icons/fa";
 import C from "../constants";
 import { logoutUser } from "../actions/users";
-import { getCurrentUserType } from "../common/generalfuncs";
+
+import {
+  loggedIn,
+  getCurrentUserType
+} from '../common/generalfuncs';
 
 class TopNav extends Component {
+
+  dynamicMenuItems = () => {
+    if (loggedIn()) {
+      this.getOrdersLink();
+      this.getPlaceOrderLink();
+    }
+    return null;
+  }
+
+  getOrdersLink = () => {
+    if (localStorage.user !== undefined) {
+      return (
+        <Link to="/orders" className="nav-item nav-link">
+        { getCurrentUserType() === "merchant" ? <span>Orders</span> : <span>My Orders</span> }
+        </Link>
+      );
+    } else {
+      console.log("stored user", localStorage.user)
+      console.log("not logged in!")
+      return null;
+    }
+  }
+  getPlaceOrderLink = () => {
+    if (localStorage.user !== undefined) {
+      return (
+        getCurrentUserType() === "merchant" ? null :
+        <Link to="/order" className="nav-item nav-link">
+          Place Order
+        </Link>
+      );
+    } else {
+      console.log("not logged in!")
+      return null;
+    }
+  }
   
   logout = () => {
     localStorage.removeItem(C.LS.USER);
@@ -32,14 +71,23 @@ class TopNav extends Component {
               <Link to="/home" className="nav-item nav-link active">
                 Home <span className="sr-only">(current)</span>
               </Link>
-              <Link to="/orders" className="nav-item nav-link">
+
+              {/* { this.dynamicMenuItems() } */}
+
+              {
+              /* <Link to="/orders" className="nav-item nav-link">
               { getCurrentUserType() === "merchant" ? <span>Orders</span> : <span>My Orders</span> }
-              </Link>
-              { getCurrentUserType() === "merchant" ? null :
-                  <Link to="/order" className="nav-item nav-link">
-                    Place Order
-                  </Link>
+              </Link> */
+              this.getOrdersLink()
               }
+              {
+              // getCurrentUserType() === "merchant" ? null :
+              //     <Link to="/order" className="nav-item nav-link">
+              //       Place Order
+              //     </Link>
+              this.getPlaceOrderLink()
+              }
+
               <Link to="/profile" className="nav-item nav-link">
                 My Profile
               </Link>
