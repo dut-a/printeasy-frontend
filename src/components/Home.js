@@ -29,7 +29,7 @@ class Home extends React.Component {
   renderServices_alt = () => this.getCurrentServices().map(service => {
     return <Service key={service.id} offerers={this.getCustomOfferers(this.getCurrentServices())} service={service} handleClick={this.handleClick} />
   });
-  
+
   handleLoading = () => {
     if (this.props.fetching) {
       return <div>Loading Data...</div>
@@ -52,7 +52,9 @@ class Home extends React.Component {
       return (
         <div key={offer} onClick={() => this.handleClick(serviceOffers[offer])}>
           <p className="title-medium"> { offer } </p>
-          <img style={{ width: '300px', float: 'left', margin: '2px' }} src={ require(`../images/${this.urlify(offer)}.jpg`)} />
+          <img style={{ width: '300px', float: 'left', margin: '2px' }}
+            src={ require(`../images/${this.urlify(offer)}.jpg`)}
+            alt={`${offer.service_type}`} />
           <p />
           <div>
             <strong><em style={{color: "red"}}>Offered by</em></strong>

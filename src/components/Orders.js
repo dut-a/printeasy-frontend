@@ -5,12 +5,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { loggedIn, getRequestConfig, noData, getCurrentUserId, getCurrentUserType, formatDateForSort } from "../common/generalfuncs";
 import { fetchOrders } from '../actions/orders';
-import Order from './Order';
 import $ from 'jquery';
-import * as tableSorter from "tablesorter";
-import { addError } from "../actions/general";
 
 class Orders extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentOrder: ""
+    };
+  }
 
   componentDidMount() {
     if (loggedIn()) {
@@ -21,9 +24,9 @@ class Orders extends React.Component {
   }
 
   getUserOrders = () => this.props.prints.filter(or => {
-    console.log("current order", or)
+    // console.log("current order", or)
     let ownedOrders = [];
-    console.log("current user type: ", getCurrentUserType());
+    // console.log("current user type: ", getCurrentUserType());
     if (getCurrentUserType() === "merchant") {
       ownedOrders = or.fulfilled_by === getCurrentUserId();
     } else if (getCurrentUserType() === "customer") {
@@ -35,8 +38,9 @@ class Orders extends React.Component {
   displayRow = () => {
     return this.getUserOrders().map(order => {
       return (
-          <tr key={order.id}>
-            <td onClick={this.editPrint(order)}><img src={ require("../images/digital_printing_tn.jpg") } />{ order.print_type }</td>
+          <tr key={order.id} onClick={() => this.handleClick(order)}>
+            <td><img src={ require("../images/digital_printing_tn.jpg") }
+              alt={ order.print_type } />{ order.print_type }</td>
             <td>{ order.doc_to_print.url }</td>
             <td data-date={ formatDateForSort(order.placed_on) }>{ order.placed_on }</td>
 
@@ -50,6 +54,25 @@ class Orders extends React.Component {
           </tr>
       );
     });
+  }
+
+  displayOrderDetails = order => {
+    return (
+        <div>
+          <p><img src={ require("../images/digital_printing_tn.jpg") }
+              alt={ order.print_type } />{ order.print_type }</p>
+          <p>{ order.doc_to_print.url }</p>
+          <p data-date={ formatDateForSort(order.placed_on) }>{ order.placed_on }</p>
+
+          { getCurrentUserType() === "merchant" ?
+          <p>{ order.user.first_name} { order.user.last_name }</p>
+          : null }
+          { getCurrentUserType() === "customer" ?
+          <p>{ order.service.user.name }</p>
+          : null }
+          <p>{ order.status }</p>
+        </div>
+    );
   }
 
   renderOrders = () => {
@@ -76,6 +99,9 @@ class Orders extends React.Component {
               </tr>
             </thead>
             <tbody>
+              { /* set initial order */
+                // this.setState({currentOrder: this.getUserOrders()[0] })
+              }
               { this.displayRow() }
             </tbody>
           </table>
@@ -94,6 +120,11 @@ class Orders extends React.Component {
 
   handleClick = order => {
     console.log("clicked:", order)
+    this.setState({
+      currentOrder: order
+    });
+    console.log("order (state):", this.state.currentOrder)
+    // this.displayOrderDetails(order);
   }
 
 
@@ -142,7 +173,7 @@ editPrint = printData => dispatch => {
       });
     });
 
-    console.log("CURRENT prints",this.props.prints)
+    // console.log("CURRENT prints",this.props.prints)
     return (
       <div className="App">
         <div>
