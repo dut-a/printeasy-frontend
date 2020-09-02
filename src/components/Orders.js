@@ -7,6 +7,9 @@ import { loggedIn, getRequestConfig, noData, getCurrentUserId, getCurrentUserTyp
 import { fetchOrders } from '../actions/orders';
 import $ from 'jquery';
 
+// eslint-disable-next-line
+import tablesorter from 'tablesorter'; // though unused, don't remove; it breaks '$.tablesorter'
+
 class Orders extends React.Component {
   constructor(props) {
     super(props);
@@ -155,7 +158,7 @@ editPrint = printData => dispatch => {
   render() {
 
     // table data sorting
-    $(document).ready(function() {
+    $(function() {
       $.tablesorter.addParser({
         id: "getDateAttr",
         is: function(sort) { return false; },
