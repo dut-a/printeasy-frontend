@@ -60,7 +60,7 @@ class Login extends Component {
 
   render() {
     return (
-      <div>
+      <div id="login">
         <h3>Sign in</h3>
         <form onSubmit={this.login}>
           <div className="mdl-textfield">
@@ -86,7 +86,16 @@ class Login extends Component {
             />
           </div>
           <div>
-            <input type="submit" value="Login" className="btn btn-success" />
+            <input
+              type="submit"
+              value="Login"
+              className="btn btn-success"
+              style={{
+                width: 25 + "%",
+                height: 50 + "px",
+                borderRadius: 50 + "px",
+                fontSize: 1.95 + "em"
+              }}/>
           </div>
           <div style={{marginTop: "5%"}}>
             Don't have an account yet? &nbsp;&nbsp;

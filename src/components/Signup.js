@@ -150,7 +150,7 @@ class Signup extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container" style={{backgroundColor: "rgba(255, 255, 255, 0.95)"}}>
         <h3>Create an Account</h3>
         <form onSubmit={this.createUser}>
           <div className="mdl-textfield">
@@ -294,7 +294,13 @@ class Signup extends Component {
           { (this.state.user_type.toLowerCase() === "merchant") ? this.getMerchantOnlyFields() : null } 
 
           <div>
-            <input type="submit" value="Create Account" className="btn btn-success" />
+            <input type="submit" value="Create Account" className="btn btn-success"
+              style={{
+                width: 25 + "%",
+                height: 50 + "px",
+                borderRadius: 50 + "px",
+                fontSize: 1.95 + "em"
+              }} />
           </div>
           <div style={{marginTop: "5%"}}>
             Already have an account yet? &nbsp;

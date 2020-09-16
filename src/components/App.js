@@ -9,7 +9,8 @@ import {
 import logo from "../logo.svg";
 import "../App.css";
 import "../App-more.css";
-import "../css/litte-app-table.css"
+import "../css/little-app-table.css"
+import "../css/generic.css"
 // eslint-disable-next-line
 import ServicesList from "./ServicesList";
 import Home from "./Home";
@@ -28,6 +29,7 @@ const App = () => {
     <Router>
       <div className="App">
         <TopNav icon="paint brush" title="PrintEasy" description="Want it on paper? just PrintEasy!" />
+        {/* <Home /> TODO: Make this a landing page on app launch */}
         <Switch>
           <Route path="/home" component={Home} />
           <Route path="/orders" component={Orders} />

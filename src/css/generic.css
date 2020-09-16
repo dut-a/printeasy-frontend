@@ -1,0 +1,17 @@
+
+#root {
+  min-height: 730px;
+  background: rgb(192 193 193 / 20%);
+}
+
+#login {
+  background: beige;
+}
+
+/* TODO: make this work to replace what's inline on buttons on 'Login' + 'Signup' pages. */
+.btn-custom-success {
+  width: 25%;
+  height: 50px;
+  border-radius: 50px;
+  font-size: 1.95em;
+}
